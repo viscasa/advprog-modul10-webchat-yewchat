@@ -107,10 +107,7 @@ impl Component for Chat {
                             .iter()
                             .map(|u| UserProfile {
                                 name: u.into(),
-                                avatar: format!(
-                                    "https://avatars.dicebear.com/api/adventurer-neutral/{}.svg",
-                                    u
-                                )
+                                avatar: format!("https://api.dicebear.com/6.x/fun-emoji/svg?seed={}", u)
                                 .into(),
                             })
                             .collect();
@@ -178,13 +175,17 @@ impl Component for Chat {
                     }
                 </div>
                 <div class="grow h-screen flex flex-col">
-                    <div class="w-full h-14 border-b-2 border-gray-300"><div class="text-xl p-3">{"💬 Chat!"}</div></div>
+                    <div class="w-full h-16 bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md flex items-center justify-between px-4">
+                        <div class="text-xl font-semibold">{"💬 YewChat"}</div>
+                        <div class="text-sm opacity-80">{"Connected ✅"}</div>
+                    </div>
+
                     <div class="w-full grow overflow-auto border-b-2 border-gray-300">
                         {
                             self.messages.iter().map(|m| {
                                 let user = self.users.iter().find(|u| u.name == m.from).unwrap();
                                 html!{
-                                    <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg ">
+                                    <div class="flex items-end w-3/6 backdrop-blur-md bg-white/40 border border-white/30 m-8 rounded-xl shadow-md p-4">
                                         <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
                                         <div class="p-3">
                                             <div class="text-sm">
@@ -205,8 +206,13 @@ impl Component for Chat {
 
                     </div>
                     <div class="w-full h-14 flex px-3 items-center">
-                        <input ref={self.chat_input.clone()} type="text" placeholder="Message" class="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700" name="message" required=true />
-                        <button onclick={submit} class="p-3 shadow-sm bg-blue-600 w-10 h-10 rounded-full flex justify-center items-center color-white">
+                        <div class="relative w-full mx-3">
+                        <input ref={self.chat_input.clone()} type="text" placeholder="Type a message..."
+                        class="w-full py-3 pl-10 pr-4 bg-white/70 backdrop-blur-sm border border-gray-300 rounded-full outline-none focus:ring-2 focus:ring-indigo-300"
+                        name="message" required=true />
+                        </div>
+                        <button onclick={submit}
+                        class="p-3 shadow-sm bg-indigo-600 hover:bg-indigo-700 w-10 h-10 rounded-full flex justify-center items-center text-white">
                             <svg fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="fill-white">
                                 <path d="M0 0h24v24H0z" fill="none"></path><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
                             </svg>
